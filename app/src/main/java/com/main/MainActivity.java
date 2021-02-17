@@ -1,18 +1,26 @@
 package com.main;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.main.adapters.TrivialWSAdapter;
+import com.main.http.ColaPeticionesSingletone;
 import com.main.modelo.Pregunta;
 
 import org.json.JSONException;
@@ -25,20 +33,19 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     private TrivialWSAdapter adapter;
     private List<Pregunta> listaPreguntas;
+    private Button btnJugar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        listaPreguntas=new ArrayList<>();
-//        listaPreguntas.add(new Pregunta(1,"pregunta 1",true,""));
-//        listaPreguntas.add(new Pregunta(2,"pregunta 2",true,""));
-//        listaPreguntas.add(new Pregunta(3,"pregunta 3",true,""));
-//        listaPreguntas.add(new Pregunta(4,"pregunta 4",true,""));
-
+        btnJugar=findViewById(R.id.btnJugar);
         cargarListaAdapter();
         cargarPreguntasWS();
+
+
+        btnJugar.setOnClickListener(v->jugar());
+
 
     }
     private void cargarListaAdapter(){
@@ -53,10 +60,39 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    public void jugar(){
+        int total=listaPreguntas.size();
+        int acierto=0;
+        int numeroPreguntasRespondidas=0;
+        for (Pregunta pregunta:listaPreguntas){
+            if (pregunta.getRespuestaJugador()!=null){
+                numeroPreguntasRespondidas++;
+                if (pregunta.getRespuestaJugador()==pregunta.isRespuesta()){
+                    acierto++;
+                }
+            }
+
+        }
+            String msg="";
+            if (numeroPreguntasRespondidas !=total){
+                msg="Faltan respuestas. siga Jugando.";
+            }else{
+                msg=" ha acertado "+acierto+" de "+total;
+            }
+
+            //Mostrar Resultado
+            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("RESULTADO").setMessage(msg)
+                    .setIcon((android.R.drawable.ic_dialog_info))
+                    .setNeutralButton(android.R.string.ok,((dialog, which) -> {}));
+            builder.create().show();
+    }
+
+
     private void cargarPreguntasWS(){
         String url="http://10.0.2.2:8080/2001_Trivial_WS/webresources/preguntas";
 
-        requestQueue= Volley.newRequestQueue(this);
+        requestQueue= ColaPeticionesSingletone.getInstance(this).getRequestQueue();
         JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -89,4 +125,34 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
 
     }
+    //Menu y opciones
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Enlace a mantenimiento
+        if (item.getItemId()==R.id.opcionMto){
+            Intent intent=new Intent (this, MantenimientoActivity.class);
+            startActivityForResult(intent,1);
+            return true;
+
+            //Modo Noche
+        }else if(item.getItemId()==R.id.nightMode){
+            if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_NO){
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            return true;
+        }else{
+
+            return super.onContextItemSelected(item);
+        }
+    }
+
 }

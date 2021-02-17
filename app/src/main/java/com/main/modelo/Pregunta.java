@@ -8,7 +8,7 @@ public class Pregunta {
 
     // atributo para guardar la respuesta del usuario
 
-    private boolean respuestaJugador;
+    private Boolean respuestaJugador;
 
     public Pregunta(int id, String descripcion, boolean isCorrecto, String mensaje) {
         this.id = id;
@@ -55,11 +55,11 @@ public class Pregunta {
         this.mensaje = mensaje;
     }
 
-    public boolean isRespuestaJugador() {
+    public Boolean getRespuestaJugador() {
         return respuestaJugador;
     }
 
-    public void setRespuestaJugador(boolean respuestaJugador) {
+    public void setRespuestaJugador(Boolean respuestaJugador) {
         this.respuestaJugador = respuestaJugador;
     }
 }

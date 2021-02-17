@@ -1,6 +1,5 @@
 package com.main.adapters;
 
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,8 +57,20 @@ public class TrivialWSAdapter extends RecyclerView.Adapter<TrivialWSAdapter.MiVi
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder=new AlertDialog.Builder(view.getContext());
-                builder.setMessage(pregunta.mensaje);
+                builder.setTitle("Pista").setMessage(pregunta.mensaje)
+                        .setIcon((android.R.drawable.ic_menu_help))
+                        .setNeutralButton(android.R.string.ok,((dialoge, which) -> {}));
                 builder.create().show();
+            }
+        });
+        holder.radioButtonFalse.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (isChecked){
+                pregunta.setRespuestaJugador(false);
+            }
+        });
+        holder.radioButtonTrue.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (isChecked){
+                pregunta.setRespuestaJugador(true);
             }
         });
     }
@@ -68,6 +79,16 @@ public class TrivialWSAdapter extends RecyclerView.Adapter<TrivialWSAdapter.MiVi
     public int getItemCount() {
         return listaPreguntas.size();
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     public class MiViewHolder extends RecyclerView.ViewHolder{
         TextView textViewId;
