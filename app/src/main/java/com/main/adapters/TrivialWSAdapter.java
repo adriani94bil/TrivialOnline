@@ -1,5 +1,6 @@
 package com.main.adapters;
 
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +9,10 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.main.MainActivity;
 import com.main.MantenimientoActivity;
 import com.main.R;
 import com.main.modelo.Pregunta;
@@ -21,6 +24,7 @@ public class TrivialWSAdapter extends RecyclerView.Adapter<TrivialWSAdapter.MiVi
 
     private List<Pregunta> listaPreguntas;
     private MantenimientoActivity mtoActivity;
+    private MainActivity mainActivity;
 
     public TrivialWSAdapter(List<Pregunta> preguntas) {
 
@@ -50,7 +54,14 @@ public class TrivialWSAdapter extends RecyclerView.Adapter<TrivialWSAdapter.MiVi
         holder.textViewId.setText(""+pregunta.getId());
         holder.textViewPreg.setText(pregunta.getDescripcion());
         //Falta el onclick
-        //holder.btnPista.
+        holder.btnPista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(view.getContext());
+                builder.setMessage(pregunta.mensaje);
+                builder.create().show();
+            }
+        });
     }
 
     @Override
