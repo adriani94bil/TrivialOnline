@@ -108,6 +108,33 @@ public class MantenimientoActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.btnGuardarForm:
+                Log.d("trivial", "guardar");
+
+                if(preguntaSeleccionada == null){
+                    //GRABAR NUEVO
+                    boolean respuesta = this.checkBoxNew.isChecked();
+                    Pregunta nueva = new Pregunta(
+                            this.editTextDescripcion.getText().toString(),
+                            this.editTextMensaje.getText().toString(),
+                            respuesta
+                    );
+
+                    adapter.createPregunta(nueva);
+
+                }else {
+                    // MODIFICAR
+                    preguntaSeleccionada.setDescripcion(editTextDescripcion.getText().toString());
+                    preguntaSeleccionada.setMensaje(editTextMensaje.getText().toString());
+                    preguntaSeleccionada.setRespuesta(checkBoxNew.isChecked());
+                    adapter.updatePregunta(preguntaSeleccionada.getId(),editTextDescripcion.getText().toString(),editTextMensaje.getText().toString(),checkBoxNew.isChecked());
+                }
+                preguntaSeleccionada = null;
+                editTextDescripcion.setText("");
+                editTextMensaje.setText("");
+                cargarListaAdapter();
+                cargarPreguntasWS();
+                break;
             case R.id.btnCerrarGestion:
                 Intent intent= new Intent();
                 intent.putExtra("mantenimiento", true);

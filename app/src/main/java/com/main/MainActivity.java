@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +30,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     RequestQueue requestQueue;
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         btnJugar=findViewById(R.id.btnJugar);
         cargarListaAdapter();
         cargarPreguntasWS();
+        pruebaLanzarHilo();
 
 
         btnJugar.setOnClickListener(v->jugar());
@@ -154,5 +159,23 @@ public class MainActivity extends AppCompatActivity {
             return super.onContextItemSelected(item);
         }
     }
+
+    //Hilo
+    private void pruebaLanzarHilo(){
+        ExecutorService executor= Executors.newSingleThreadExecutor();
+        Handler handler=new Handler(Looper.getMainLooper());
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("LANZA HILO","iniciado");
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i("LANZA HILO","fin");
+                    }
+                });
+            }
+        });
+    }// fin prueba lanza hilo
 
 }
