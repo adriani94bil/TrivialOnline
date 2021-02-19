@@ -53,6 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarListaAdapter();
+        cargarPreguntasWS();
+        pruebaLanzarHilo();
+    }
+
     private void cargarListaAdapter(){
         adapter=new TrivialWSAdapter(listaPreguntas);
 

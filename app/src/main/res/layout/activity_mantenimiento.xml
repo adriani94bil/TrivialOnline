@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MantenimientoActivity">
+    tools:context=".MantenimientoActivity"
+    android:background="@drawable/main_gradient">
 
     <ImageView
         android:id="@+id/imageViewMant"
@@ -23,13 +24,14 @@
         android:id="@+id/editTextDescripcionForm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="74dp" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewMant" />
 
     <EditText
         android:id="@+id/editTextMensajeForm"
@@ -72,7 +74,7 @@
         android:id="@+id/listaModRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/btnCerrarGestion"
         app:layout_constraintEnd_toEndOf="parent"

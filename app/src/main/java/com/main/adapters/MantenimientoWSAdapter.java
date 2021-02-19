@@ -185,7 +185,6 @@ public class MantenimientoWSAdapter extends RecyclerView.Adapter<MantenimientoWS
         ImageButton btnBorrrar;
         CheckBox checkBoxMod;
         public MiViewHolder(@NonNull View itemView) {
-
             super(itemView);
             textViewDescMod=itemView.findViewById(R.id.textViewDescrMod);
             textViewPistaMod=itemView.findViewById(R.id.textViewPistaMod);
